@@ -31,7 +31,7 @@ IN THE SOFTWARE.
   $ = jQuery;
 
   $.fn.validateCreditCard = function(callback, options) {
-    var card, card_type, card_types, get_card_type, is_valid_length, is_valid_luhn, normalize, validate, validate_number, _i, _len, _ref;
+    var card, card_type, card_types, get_card_type, is_valid_length, is_valid_luhn, normalize, validate, validate_number, _i, _len, _ref, onKeyUp;
     card_types = [
       {
         name: 'amex',
@@ -172,13 +172,14 @@ IN THE SOFTWARE.
     normalize = function(number) {
       return number.replace(/[ -]/g, '');
     };
+    onKeyUp = function() {
+        return validate.call(this);
+    };
     this.on('input', function() {
-      $(this).off('keyup');
+      $(this).off('keyup', onKeyUp);
       return validate.call(this);
     });
-    this.on('keyup', function() {
-      return validate.call(this);
-    });
+    this.on('keyup', onKeyUp);
     if (this.length !== 0) {
       validate.call(this);
     }
